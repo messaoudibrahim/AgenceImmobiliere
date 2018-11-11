@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 use Cocur\Slugify\Slugify;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PropertyRepository")
@@ -11,10 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
 class Property
 {
     /**
-     *
+     *construct in order to init the date create
      */
-    public function _construct(){
-        $this->create_at = new \DateTime();
+    public function __construct(){
+        $this->create_at = new DateTime();
     }
 
     /**
@@ -43,6 +46,8 @@ class Property
     private $description;
 
     /**
+     * @Assert\Range(min="10",max="200",minMessage="la surface doit etre superieur a 10"
+     * ,maxMessage="la surface foit etre inferieur a 400")
      * @ORM\Column(type="integer")
      */
     private $surface;
@@ -83,6 +88,7 @@ class Property
     private $address;
 
     /**
+     * @Assert\Regex("/^[0-9]{5}/", message="code postal composer de 5 chiffre")
      * @ORM\Column(type="string", length=255)
      */
     private $postal_code;

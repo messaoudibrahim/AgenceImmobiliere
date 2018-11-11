@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% block title  %} Admin {% endblock %}
+{% block body  %}
+<div class="container mt-4">
+    <h1>Gérer Vos biens</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Titre</th>
+            <th>Ville</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for property in properties  %}
+        <tr>
+            <td>{{ property.title }}</td>
+            <td>{{ property.city }}</td>
+            <td>
+                <a href="{{ path('admin.property.edit', { id: property.id}) }}"
+                   class="btn btn-info">Editer</a>
+            </td>
+            <td>
+                <a href="{{ path('admin.property.remove', { id: property.id}) }}"
+                   class="btn btn-danger" onsubmit="return confirm('vous voulez vraiment supprimer ce bien !')">Supprimer</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="text-right"> <a href="{{ path('admin.property.create') }}"
+                                class="btn btn-primary">Créer un nouveau bien</a></div>
+</div>
+
+{% endblock %}

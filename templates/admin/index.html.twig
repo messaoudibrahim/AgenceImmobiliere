@@ -19,10 +19,9 @@
             <td>
                 <a href="{{ path('admin.property.edit', { id: property.id}) }}"
                    class="btn btn-info">Editer</a>
-            </td>
-            <td>
                 <a href="{{ path('admin.property.remove', { id: property.id}) }}"
                    class="btn btn-danger" onsubmit="return confirm('vous voulez vraiment supprimer ce bien !')">Supprimer</a>
+
             </td>
         </tr>
         {% endfor %}

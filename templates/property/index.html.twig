@@ -1,7 +1,12 @@
 {% extends 'base.html.twig' %}
 {% block title %}Nos offres{% endblock %}
 {% block body%}
-    <div class="container text-center t" >
-        <h1>{{ dump(properties) }}</h1>
+    <div class="container  mt-4">
+        <h1>Voir Nos Biens</h1>
+        {% for property  in properties%}
+            <div class="col-3 mt-2">
+                {{ include('property/_property.html.twig') }}
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}

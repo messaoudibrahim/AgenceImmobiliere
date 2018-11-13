@@ -24,7 +24,7 @@ class PropertyController extends AbstractController
      * @Route(path="/biens",name="property.index")
      */
     public function index() :Response{
-        $laProperties = $this->getDoctrine()->getRepository(Property::class)->findBy(['sold'=>true]);
+        $laProperties = $this->getDoctrine()->getRepository(Property::class)->findBy(['sold'=>false]);
         return $this->render('property/index.html.twig', [
             'menu_current' => 'properties',
             'properties' => $laProperties

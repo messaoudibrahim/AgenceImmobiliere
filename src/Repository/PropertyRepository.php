@@ -24,7 +24,7 @@ class PropertyRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
             ->andWhere('p.sold = false')
             ->orderBy('p.create_at', 'ASC')
-            ->setMaxResults(10)
+            ->setMaxResults(4)
             ->getQuery()
             ->getResult()
         ;

@@ -10,24 +10,34 @@ namespace App\Controller;
 
 
 use App\Entity\Property;
+use Knp\Bundle\PaginatorBundle\KnpPaginatorBundle;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Tests\Fixtures\KernelForOverrideName;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PropertyController extends AbstractController
 {
     /**
+     * @param Request $request
+     * @param PaginatorInterface $paginator
      * @return Response
      * @Template()
      * @Route(path="/biens",name="property.index")
      */
-    public function index() :Response{
-        $laProperties = $this->getDoctrine()->getRepository(Property::class)->findBy(['sold'=>false]);
+    public function index(Request $request, PaginatorInterface $paginator) :Response{
+        $laPropertiesQuery = $this->getDoctrine()->getRepository(Property::class)->getbienVisible();
+
+        $pagination = $paginator->paginate(
+            $laPropertiesQuery, /* query NOT result */
+            $request->query->getInt('page', 1), 9
+        );
         return $this->render('property/index.html.twig', [
             'menu_current' => 'properties',
-            'properties' => $laProperties
+            'properties' => $pagination
         ]);
     }
 

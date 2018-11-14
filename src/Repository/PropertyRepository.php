@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Property;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -32,15 +33,15 @@ class PropertyRepository extends ServiceEntityRepository
 
 
 
-    /*
-    public function findOneBySomeField($value): ?Property
+
+    public function getBienVisible(): QueryBuilder
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $loQuery =  $this->createQueryBuilder('p')
+            ->andWhere('p.sold = :sold')
+            ->setParameter('sold', false);
+
+        return $loQuery;
+
     }
-    */
+
 }

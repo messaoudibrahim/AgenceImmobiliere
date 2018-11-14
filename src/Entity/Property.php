@@ -47,7 +47,7 @@ class Property
 
     /**
      * @Assert\Range(min="10",max="200",minMessage="la surface doit etre superieur a 10"
-     * ,maxMessage="la surface foit etre inferieur a 400")
+     * ,maxMessage="la surface foit etre inferieur a 200")
      * @ORM\Column(type="integer")
      */
     private $surface;

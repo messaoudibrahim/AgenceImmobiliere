@@ -12,13 +12,11 @@ namespace App\Controller;
 use App\Entity\Property;
 use App\Entity\PropertySearch;
 use App\Form\SearchFormType;
-use Knp\Bundle\PaginatorBundle\KnpPaginatorBundle;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Tests\Fixtures\KernelForOverrideName;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PropertyController extends AbstractController
@@ -35,8 +33,8 @@ class PropertyController extends AbstractController
         $loSearch = new PropertySearch();
         $loForm = $this->createForm(SearchFormType::class, $loSearch);
         $loForm->handleRequest($request);
-        
-        $laPropertiesQuery = $this->getDoctrine()->getRepository(Property::class)->getbienVisible();
+
+        $laPropertiesQuery = $this->getDoctrine()->getRepository(Property::class)->getbienVisible($loSearch);
         $pagination = $paginator->paginate(
             $laPropertiesQuery, /* query NOT result */
             $request->query->getInt('page', 1), 9

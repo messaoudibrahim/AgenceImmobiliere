@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Property;
+use App\Entity\PropertySearch;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -32,14 +33,28 @@ class PropertyRepository extends ServiceEntityRepository
     }
 
 
-
-
-    public function getBienVisible(): QueryBuilder
+    /**
+     * @param  PropertySearch $poSearch
+     * @return QueryBuilder
+     */
+    public function getBienVisible(PropertySearch $poSearch): QueryBuilder
     {
-        $loQuery =  $this->createQueryBuilder('p')
-            ->andWhere('p.sold = :sold')
-            ->setParameter('sold', false);
 
+        $loQuery =  $this->createQueryBuilder('p');
+
+        if ($poSearch->getMaxPrice()){
+            $loQuery->andWhere('p.price <= :price')
+                ->setParameter('price' , $poSearch->getMaxPrice());
+        }
+
+        if ($poSearch->getMinSurface()){
+            $loQuery->andWhere('p.surface >= :surface')
+                ->setParameter('surface' , $poSearch->getMinSurface());
+        }
+
+
+        $loQuery->andWhere('p.sold = :sold')
+            ->setParameter('sold', false);
         return $loQuery;
 
     }

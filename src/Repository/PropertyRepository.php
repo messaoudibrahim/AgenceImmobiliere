@@ -52,7 +52,15 @@ class PropertyRepository extends ServiceEntityRepository
                 ->setParameter('surface' , $poSearch->getMinSurface());
         }
 
-
+        if ($poSearch->getOptions()->count() > 0) {
+            $liCount  = 0;
+            foreach ($poSearch->getOptions() as $liCount => $value) {
+                $liCount ++;
+                $loQuery = $loQuery
+                    ->andWhere(":option$liCount MEMBER OF p.options ")
+                    ->setParameter("option$liCount" , $value);
+            }
+        }
         $loQuery->andWhere('p.sold = :sold')
             ->setParameter('sold', false);
         return $loQuery;

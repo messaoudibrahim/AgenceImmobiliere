@@ -5,8 +5,11 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-8">
-                        <img src="{{ vich_uploader_asset(property, 'imageFile') | imagine_filter('meduim')}}" alt="card-img-top" style="width: 100%; height: auto">
-                    </div>
+                        {% if property.imageName %}
+                            <img src="{{ vich_uploader_asset(property, 'imageFile') | imagine_filter('meduim')}}" alt="card-img-top" style="width: 100%; height: auto">
+                        {% else %}
+                            <img src="{{ '/images/properties/empty_home.jpg' | imagine_filter('meduim')}}" alt="card-img-top" style="width: 100%; height: auto">
+                        {% endif %}                    </div>
                     <div class="col-md-4">
                         <h1>{{ property.title }}</h1>
                         <h2>{{ property.room }} pieces, {{ property.surface }} m²</h2>
@@ -44,7 +47,16 @@
                     </tr>
                 </table>
             </div>
-            <h2>Spécificité</h2>
+            <div class="cal-md-5">
+                <h2>Spécificité</h2>
+                <ul class="list-group">
+                    {% for option in property.options %}
+                        <li class="list-group-item">
+                            {{ option.name }}
+                        </li>
+                    {% endfor %}
+                </ul></div>
+
             <div class="col-md-8"></div>
         </div>
 

@@ -45,7 +45,6 @@ class PropertyController extends AbstractController
             'form'         => $loForm->createView()
         ]);
     }
-
     /**
      * @Route(path="/biens/{slug}-{id}", name="property.show", requirements={"slug": "[a-z0-9\-]*"})
      * @param Property $property

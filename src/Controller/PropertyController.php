@@ -9,9 +9,12 @@
 namespace App\Controller;
 
 
+use App\Entity\Contact;
 use App\Entity\Property;
 use App\Entity\PropertySearch;
+use App\Form\ContactType;
 use App\Form\SearchFormType;
+use App\Notification\ContactNotification;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -45,14 +48,16 @@ class PropertyController extends AbstractController
             'form'         => $loForm->createView()
         ]);
     }
+
     /**
      * @Route(path="/biens/{slug}-{id}", name="property.show", requirements={"slug": "[a-z0-9\-]*"})
      * @param Property $property
      * @param string $slug
+     * @param Request $request
+     * @param ContactNotification $notification
      * @return Response
      */
-    public function show(Property $property, string $slug):Response{
-
+    public function show(Property $property, string $slug, Request $request,ContactNotification  $notification):Response{
         // if the slug was changed in the url
         if ($property->getSlug() != $slug){
             $this->redirectToRoute('property.show',
@@ -61,11 +66,27 @@ class PropertyController extends AbstractController
                'slug'=> $property->getSlug()
             ], 301);
         }
+        $loContact = new Contact();
+        $loContact->setProperty($property);
+        $loForm = $this->createForm(ContactType::class, $loContact);
+        $loForm->handleRequest($request);
+        if ($loForm->isSubmitted() && $loForm->isValid()){
+            //TODO
+            $notification->notify($loContact);
+            /**
+            $this->redirectToRoute('property.show',
+                [
+                    'id' => $property->getId(),
+                    'slug'=> $property->getSlug()
+                ]
+            );*/
+        }//
 
         return $this->render('property/show.html.twig',
             [
                 'menu_current' => 'properties',
-                'property'     => $property
+                'property'     => $property,
+                'form'         => $loForm->createView()
             ]);
     }
 }
